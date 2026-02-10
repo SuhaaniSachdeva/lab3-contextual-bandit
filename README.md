@@ -1,74 +1,42 @@
-# Student Submission Checklist (Lab 3)
+This repository contains my implementation for Lab 3 of the Reinforcement Learning course. The goal of the assignment is to build a contextual bandit based news recommendation system by first classifying users into contexts and then learning optimal recommendations for each context.
 
-Before submitting your Lab 3 assignment, ensure that **all items below are completed**. Submissions that do not follow this checklist may receive partial or no credit.
+The work is implemented entirely in a single Jupyter notebook:
+lab3_results_U20230075.ipynb
 
----
+Data files used:
 
-## 🔹 Repository and Branching
+train_users.csv
 
-* [ ] The repository is correctly created on GitHub.
-* [ ] All work is committed to **exactly one branch** named
-  `firstname_U20230xxx`.
-* [ ] **No work is pushed to `master`**.
-* [ ] The correct branch is pushed to GitHub.
+test_users.csv
 
----
+news_articles.csv
 
-## 🔹 Notebook Submission
+The assignment is divided into two main parts.
 
-* [ ] Exactly **one** Jupyter Notebook (`.ipynb`) is submitted.
-* [ ] The notebook is placed at the **root of the repository**.
-* [ ] The notebook is named **exactly**:
-  `lab3_results_<roll_number>.ipynb`.
-* [ ] The notebook runs **top to bottom without errors**.
-* [ ] All outputs (plots, tables, metrics) are visible in the notebook.
+User Classification (Section 5.2):
+User features are preprocessed by handling missing values and encoding categorical variables using one-hot encoding. A Decision Tree classifier is trained to classify users into three user contexts. The model is evaluated using a validation split and cross-validation. Validation accuracy and classification reports are printed in the notebook.
 
----
+Contextual Bandits (Section 5.3):
+Each user context is treated as a separate bandit problem with four arms corresponding to news categories. Rewards are generated using the provided rlcmab_sampler. The following algorithms are implemented and compared:
 
-## 🔹 Sampler Usage
+Epsilon-Greedy
 
-* [ ] The provided `sampler` package is used **without modification**.
-* [ ] The sampler is initialized using your correct roll number `i`.
-* [ ] Rewards are obtained **only** via `sampler.sample(j)`.
-* [ ] No hard-coded or synthetic rewards are used.
+Upper Confidence Bound (UCB)
 
----
+Softmax
 
-## 🔹 Contextual Bandit Implementation
+Each algorithm is run for a fixed number of time steps and evaluated using average reward over time. Hyperparameter comparisons and cumulative reward plots are included.
 
-* [ ] User category is treated as the **context**.
-* [ ] News category is treated as the **bandit arm**.
-* [ ] The arm index mapping follows the specification in the lab handout.
-* [ ] All three algorithms are implemented:
+Recommendation Engine (Section 5.4):
+A recommendation function is implemented that first predicts a user’s context using the trained classifier and then selects the best news category using the learned bandit policy. Both single-user and batch recommendations are demonstrated. The distribution of recommended categories and predicted user contexts is also analyzed and visualized.
 
-  * Epsilon-Greedy
-  * Upper Confidence Bound (UCB)
-  * SoftMax
+Results:
+Among the evaluated algorithms, UCB achieves the highest final average reward, followed closely by Softmax. Epsilon-Greedy performs well for small epsilon values but converges more slowly.
 
----
-
-## 🔹 Evaluation and Plots
-
-* [ ] Classification accuracy is reported on `test_users.csv`.
-* [ ] Reinforcement learning simulation is run for **T = 10,000 steps**.
-* [ ] Plots include:
-
-  * Average Reward vs. Time (per context)
-  * Hyperparameter comparison plots
-* [ ] All plots have labeled axes, legends, and titles.
-
----
-
-## 🔹 README.md Requirements
-
-* [ ] README.md is present at the repository root.
-* [ ] It explains the overall approach and design decisions.
-* [ ] It summarizes key results and observations.
-* [ ] It includes clear instructions to reproduce the experiments.
-* [ ] All external references (if any) are properly cited.
-
----
-
-## Important Note
-
-> Submissions that do not follow the specified branch name, notebook naming convention, or sampler usage rules may not be evaluated.
+Requirements:
+Python 3.x
+NumPy
+Pandas
+Matplotlib
+Scikit-learn
+rlcmab_sampler
